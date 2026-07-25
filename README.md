@@ -82,3 +82,21 @@ Each stage can also be run through its matching file in `tests/`.
 - QA checks structure and prompt content, not generated imagery.
 - The pipeline compiles a prompt but never invokes GPT Image or an external
   model.
+
+## Capability layer
+
+AVF is capability-first rather than model-first. Pipeline code describes
+Director, Image Generation, Video Generation, or Quality Assurance work through
+provider-neutral requests and results. A future Provider Router will select an
+Adapter; the current pipeline does not depend on a Provider SDK.
+
+The Capability Layer includes stable enums, request and result models,
+`RunMetrics`, and a lightweight registry of Provider declarations. Each run can
+record estimated and actual cost, duration, quality, fallback count, model
+tokens, and cache status.
+
+Flow is only a possible future free image-generation candidate. AVF has no Flow
+Adapter and does not currently call Flow or any other external model.
+Free-first routing will require candidates to meet the minimum quality
+threshold before selecting the lowest-cost eligible Provider; otherwise it
+will escalate to a low-cost or paid option.

@@ -105,3 +105,32 @@ All module boundaries follow the principles in
 [`ProductPrinciples.md`](ProductPrinciples.md): business efficiency first,
 cost-aware generation, model independence, modularity, and quality-controlled
 automation.
+
+## Capability-first execution
+
+AVF describes production work by capability rather than model name. The four
+initial capabilities are Director, Image Generation, Video Generation, and
+Quality Assurance.
+
+```text
+Pipeline
+  -> Capability Request
+  -> Provider Router
+  -> Adapter
+  -> External Model
+```
+
+The current Capability Layer implements stable request and result data,
+execution metrics, and an in-memory registry of provider declarations. It does
+not implement the Provider Router, any Adapter, or an external model call.
+
+The boundaries are intentionally distinct:
+
+- a Contract defines what a module can do;
+- a Capability Request expresses what this run needs;
+- the future Provider Router decides who should perform the work;
+- an Adapter knows how to invoke and normalize one concrete tool or model.
+
+Pipeline code depends on capability data rather than provider SDKs. This keeps
+provider selection, fallback, and cost policy outside creative and workflow
+logic. See [`Contracts.md`](Contracts.md) for the data-contract boundary.

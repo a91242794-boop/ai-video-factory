@@ -83,3 +83,23 @@ Each production run should record:
 Cost records should support provider comparison, budget enforcement, anomaly
 detection, and business reporting. Missing provider cost data must be marked as
 unknown rather than treated as zero.
+
+## Capability routing policy
+
+Free-first means lowest responsible cost, not unconditional selection of a
+free model. The future Provider Router must first eliminate candidates that
+cannot meet the request's minimum quality threshold. Among the remaining
+eligible providers, it should choose the lowest expected total cost while
+respecting exclusions, budget, latency, and capability fit.
+
+If no free provider meets the quality threshold, routing should escalate to a
+low-cost or paid provider. The reason and every fallback must be recorded.
+
+Flow may be evaluated as a future free image-generation candidate. It is only
+a candidate declaration until a tested Adapter exists; AVF does not currently
+connect to or call Flow.
+
+Every capability result should record `RunMetrics`: estimated cost, actual
+cost, duration, quality score, fallback count, model tokens used, and cache-hit
+status. Defaults of zero mean no measured usage in the local capability data
+contract, not that unknown provider charges should be treated as free.
