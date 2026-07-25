@@ -6,10 +6,22 @@ from avf.capabilities.types import (
     QualityTier,
     SpeedTier,
 )
+from avf.capabilities.requests import (
+    CapabilityRequest,
+    DirectorRequest,
+    ImageGenerationRequest,
+    QARequest,
+    VideoGenerationRequest,
+)
 
 __all__ = [
+    "CapabilityRequest",
     "CapabilityType",
     "CostTier",
+    "DirectorRequest",
+    "ImageGenerationRequest",
+    "QARequest",
     "QualityTier",
     "SpeedTier",
+    "VideoGenerationRequest",
 ]
