@@ -1,6 +1,14 @@
 import pytest
 
+from avf.capabilities.registry import ProviderDescriptor
+from avf.capabilities.types import (
+    CapabilityType,
+    CostTier,
+    QualityTier,
+    SpeedTier,
+)
 from avf.intelligence import OptimizationScore, Optimizer, QualityScore
+from avf.router.ranking import ProviderRanking
 
 
 def test_optimizer_calculates_deterministic_quality_cost_score() -> None:
@@ -53,3 +61,28 @@ def test_optimizer_rejects_invalid_inputs(
             estimated_cost=estimated_cost,
             provider_id=provider_id,
         )
+
+
+def test_optimizer_ranks_provider_with_weighted_normalized_inputs() -> None:
+    provider = ProviderDescriptor(
+        provider_id="ranked",
+        capability=CapabilityType.IMAGE_GENERATION,
+        cost_tier=CostTier.LOW,
+        quality_tier=QualityTier.HIGH,
+        speed_tier=SpeedTier.BALANCED,
+        metadata={
+            "quality_score": 80,
+            "reliability": 0.9,
+            "estimated_cost": 0.1,
+        },
+    )
+
+    ranking = Optimizer().rank_provider(provider)
+
+    assert ranking == ProviderRanking(
+        provider_id="ranked",
+        quality_score=QualityScore(80),
+        reliability=0.9,
+        estimated_cost=0.1,
+        ranking_score=85,
+    )
