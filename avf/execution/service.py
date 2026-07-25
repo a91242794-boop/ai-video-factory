@@ -7,7 +7,7 @@ from avf.adapters.base import AdapterContract
 from avf.adapters.registry import AdapterRegistry
 from avf.capabilities.registry import ProviderDescriptor
 from avf.capabilities.requests import CapabilityRequest
-from avf.capabilities.results import CapabilityResult
+from avf.capabilities.results import CapabilityResult, RunMetrics
 from avf.execution.context import ExecutionContext
 from avf.execution.errors import (
     ExecutionAdapterNotFoundError,
@@ -16,6 +16,7 @@ from avf.execution.errors import (
     ExecutionValidationError,
 )
 from avf.execution.metrics import ExecutionMetrics
+from avf.execution.recorder import MetricsRecorder
 from avf.intelligence.quality import QualityGate
 from avf.resilience.errors import (
     AdapterTimeout,
@@ -49,6 +50,7 @@ class ExecutionService:
         fallback_policy: FallbackPolicy | None = None,
         cost_guard: CostGuard | None = None,
         quality_gate: QualityGate | None = None,
+        metrics_recorder: MetricsRecorder | None = None,
     ) -> None:
         self._router = router
         self._adapters = adapters
@@ -56,6 +58,7 @@ class ExecutionService:
         self._fallback_policy = fallback_policy or FallbackPolicy(router)
         self._cost_guard = cost_guard or CostGuard()
         self._quality_gate = quality_gate or QualityGate()
+        self._metrics_recorder = metrics_recorder
 
     def execute(
         self,
@@ -134,7 +137,7 @@ class ExecutionService:
                     continue
                 raise
 
-            result = outcome.value
+            result, call_duration = outcome.value
             minimum_score = request.metadata.get("minimum_quality_score")
             if minimum_score is not None:
                 decision = self._quality_gate.evaluate(
@@ -144,6 +147,13 @@ class ExecutionService:
                 if not decision.accepted:
                     rejection = QualityRejected(decision.reason)
                     last_failure = rejection
+                    self._record_result(
+                        self._measured_result(
+                            result,
+                            call_duration,
+                            success=False,
+                        )
+                    )
                     context.trace.append(
                         {
                             "event": "quality_rejected",
@@ -173,6 +183,9 @@ class ExecutionService:
                         continue
                     raise rejection
 
+            self._record_result(
+                self._measured_result(result, call_duration)
+            )
             duration = perf_counter() - started
             metrics = ExecutionMetrics(
                 estimated_cost=estimated_cost,
@@ -205,24 +218,60 @@ class ExecutionService:
             f"No provider available for capability {request.capability.value}"
         )
 
-    @staticmethod
     def _execute_adapter(
+        self,
         adapter: AdapterContract,
         request: CapabilityRequest,
-    ) -> CapabilityResult:
+    ) -> tuple[CapabilityResult, float]:
+        started = perf_counter()
         try:
             result = adapter.execute(request)
         except Exception as error:
+            duration = perf_counter() - started
+            self._record_result(
+                CapabilityResult(
+                    capability=request.capability,
+                    provider=adapter.provider_id,
+                    success=False,
+                    issues=[str(error)],
+                    metrics=RunMetrics(duration_seconds=duration),
+                )
+            )
             mapped = map_execution_error(error)
             if mapped is error:
                 raise
             raise mapped from error
+
+        duration = perf_counter() - started
         if not result.success:
+            self._record_result(
+                self._measured_result(result, duration)
+            )
             raise ExecutionFailed(
                 "; ".join(result.issues)
                 or "Adapter returned an unsuccessful result"
             )
-        return result
+        return result, duration
+
+    @staticmethod
+    def _measured_result(
+        result: CapabilityResult,
+        duration: float,
+        *,
+        success: bool | None = None,
+    ) -> CapabilityResult:
+        return replace(
+            result,
+            success=result.success if success is None else success,
+            metrics=replace(
+                result.metrics,
+                duration_seconds=duration,
+            ),
+        )
+
+    def _record_result(self, result: CapabilityResult) -> None:
+        if self._metrics_recorder is not None:
+            self._metrics_recorder.record(result)
 
     def _candidates(
         self,
