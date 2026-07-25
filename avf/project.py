@@ -1,16 +1,19 @@
 from pathlib import Path
 from typing import Any
 
-import yaml
-
 from avf.models import Creative, Market, Product, Project, ProjectInfo, Video
+from avf.yamlio import load_yaml_mapping
 
 
 class ProjectError(ValueError):
     """Raised when a project file cannot be loaded or validated."""
 
 
-def _required(data: dict[str, Any], path: tuple[str, ...], expected: type) -> Any:
+def _required(
+    data: dict[str, Any],
+    path: tuple[str, ...],
+    expected: type | tuple[type, ...],
+) -> Any:
     value: Any = data
     for key in path:
         if not isinstance(value, dict) or key not in value:
@@ -23,28 +26,20 @@ def _required(data: dict[str, Any], path: tuple[str, ...], expected: type) -> An
 
 def _string_list(data: dict[str, Any], path: tuple[str, ...]) -> tuple[str, ...]:
     value = _required(data, path, list)
-    if not all(isinstance(item, str) and item.strip() for item in value):
+    if not value or not all(isinstance(item, str) and item.strip() for item in value):
         raise ProjectError(f"Invalid project field: {'.'.join(path)}")
     return tuple(value)
 
 
 def load_project(path: str | Path) -> Project:
-    project_path = Path(path)
-    if not project_path.is_file():
-        raise ProjectError(f"Project file not found: {project_path}")
-    try:
-        raw = yaml.safe_load(project_path.read_text(encoding="utf-8"))
-    except yaml.YAMLError as exc:
-        raise ProjectError(f"Invalid project YAML: {project_path}") from exc
-    if not isinstance(raw, dict):
-        raise ProjectError("Project root must be a mapping")
+    raw = load_yaml_mapping(path, label="Project", error_type=ProjectError)
 
     shot_count = _required(raw, ("video", "shot_count"), int)
-    if shot_count != 6:
+    if type(shot_count) is not int or shot_count != 6:
         raise ProjectError(f"Project video.shot_count must equal 6; got {shot_count}")
 
     duration = _required(raw, ("video", "duration_seconds"), (int, float))
-    if duration <= 0:
+    if isinstance(duration, bool) or duration <= 0:
         raise ProjectError("Project video.duration_seconds must be greater than 0")
 
     return Project(

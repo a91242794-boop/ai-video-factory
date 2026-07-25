@@ -34,6 +34,27 @@ python -m avf.cli run \
 
 After installation, `avf run` accepts the same arguments.
 
+## Project input
+
+`project.yaml` requires these sections and fields:
+
+- `project`: `id`, `name`
+- `product`: `name`, `category`, non-empty `key_features`, non-empty `reference_images`
+- `market`: `country`, `language`, `platform`, `audience`
+- `video`: positive `duration_seconds`, `shot_count: 6`, `aspect_ratio`
+- `creative`: `hook`, `tone`, `environment`, `character`, `cta`
+
+YAML mappings must not contain duplicate keys. The Mini MVP rejects incomplete,
+ambiguous, or internally inconsistent project and Registry files before writing
+outputs. See `examples/mini/project.yaml` and `registry/default.yaml` for complete
+working examples.
+
+## Exit codes
+
+- `0`: pipeline completed and QA passed.
+- `1`: pipeline completed and QA failed; diagnostic outputs were written.
+- `2`: project, Registry, path, or runtime input error.
+
 ## Outputs
 
 - `storyboard.yaml`: exactly six deterministic shots.

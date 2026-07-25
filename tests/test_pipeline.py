@@ -34,7 +34,7 @@ def test_cli_returns_nonzero_when_qa_fails(tmp_path):
     registry.write_text(
         """\
 storyboard:
-  purposes: [hook, problem, product_reveal, use, benefit, cta_plate]
+  purposes: [hook, problem, product_reveal, use, benefit, wrong]
 compiler:
   target: gpt-image
 qa:

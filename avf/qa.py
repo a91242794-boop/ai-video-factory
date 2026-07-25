@@ -1,5 +1,4 @@
-from typing import Any
-
+from avf.qa_models import QAReport
 from avf.registry import Registry
 from avf.storyboard_models import Storyboard
 
@@ -8,7 +7,7 @@ def run_static_qa(
     storyboard: Storyboard,
     prompt: str,
     registry: Registry,
-) -> dict[str, Any]:
+) -> QAReport:
     shots = storyboard.shots
     visuals = [shot.visual.strip().casefold() for shot in shots]
     reveal_ids = [shot.id for shot in shots if shot.purpose == "product_reveal"]
