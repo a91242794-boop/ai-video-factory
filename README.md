@@ -1,5 +1,7 @@
 # AI Video Factory Mini MVP
 
+**AVF positioning:** Business efficiency first AI video production system.
+
 AVF Mini MVP is a deterministic, local pipeline that turns a validated product
 project into a six-shot storyboard, a GPT Image storyboard prompt, and a static
 QA report. It does not call an LLM, image model, network API, or other external
