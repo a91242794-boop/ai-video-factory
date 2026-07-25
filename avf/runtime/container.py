@@ -5,7 +5,10 @@ from collections.abc import Iterable
 from avf.runtime.context import ExecutionContext
 from avf.runtime.contract import ModuleContract
 from avf.runtime.dependency import ModuleDependency
+from avf.runtime.executor import ModuleExecutor
+from avf.runtime.io import ModuleInput, ModuleOutput
 from avf.runtime.registry import ModuleRegistry
+from avf.runtime.store import ArtifactStore
 
 
 class ModuleRuntime:
@@ -14,9 +17,13 @@ class ModuleRuntime:
         registry: ModuleRegistry,
         *,
         dependencies: Iterable[ModuleDependency] = (),
+        executor: ModuleExecutor | None = None,
+        artifact_store: ArtifactStore | None = None,
     ) -> None:
         self._registry = registry
         self._dependencies = tuple(dependencies)
+        self._executor = executor or ModuleExecutor()
+        self.artifact_store = artifact_store or ArtifactStore()
 
     def run(self, context: ExecutionContext) -> dict[str, object]:
         modules = self._ordered_modules()
@@ -31,6 +38,44 @@ class ModuleRuntime:
                     context
                 )
             return results
+        finally:
+            for module in reversed(initialized):
+                module.shutdown()
+
+    def execute(
+        self,
+        context: ExecutionContext,
+        module_input: ModuleInput | None = None,
+    ) -> dict[str, ModuleOutput]:
+        if not isinstance(context, ExecutionContext):
+            raise TypeError("context must be an ExecutionContext")
+        if module_input is not None and not isinstance(
+            module_input, ModuleInput
+        ):
+            raise TypeError("module_input must be a ModuleInput")
+
+        input_artifacts = () if module_input is None else module_input.artifacts
+        self.artifact_store.clear()
+        for artifact in input_artifacts:
+            self.artifact_store.put(artifact)
+
+        modules = self._ordered_modules()
+        initialized: list[ModuleContract] = []
+        outputs: dict[str, ModuleOutput] = {}
+        try:
+            for module in modules:
+                module.initialize(context)
+                initialized.append(module)
+            for module in modules:
+                bound_input = ModuleInput(
+                    artifacts=tuple(self.artifact_store.list()),
+                    context=context,
+                )
+                output = self._executor.execute(module, bound_input)
+                outputs[module.metadata.module_id] = output
+                for artifact in output.artifacts:
+                    self.artifact_store.put(artifact)
+            return outputs
         finally:
             for module in reversed(initialized):
                 module.shutdown()

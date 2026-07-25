@@ -1,6 +1,7 @@
 """Zero-cost local module used to exercise the AVF runtime."""
 
 from avf.runtime.context import ExecutionContext
+from avf.runtime.io import Artifact, ModuleInput, ModuleOutput
 from avf.runtime.types import ModuleMetadata, ModuleState
 
 
@@ -54,6 +55,24 @@ class StubModule:
             "cost": self.metadata.cost,
             "stub": True,
         }
+
+    def execute_io(self, module_input: ModuleInput) -> ModuleOutput:
+        if not isinstance(module_input.context, ExecutionContext):
+            raise ValueError("ModuleInput context is required")
+        self.execute(module_input.context)
+        return ModuleOutput(
+            artifacts=(
+                Artifact(
+                    artifact_id=f"{self.metadata.module_id}-output",
+                    artifact_type="stub-output",
+                    data={
+                        "project_id": module_input.context.project_id,
+                        "input_count": len(module_input.artifacts),
+                    },
+                ),
+            ),
+            metadata={"module_id": self.metadata.module_id},
+        )
 
     def shutdown(self) -> None:
         if self.state in (ModuleState.CREATED, ModuleState.STOPPED):
