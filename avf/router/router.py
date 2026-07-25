@@ -34,7 +34,10 @@ class ProviderRouter:
         request: CapabilityRequest,
     ) -> list[ProviderDescriptor]:
         ordered = self._legacy_candidates(request)
-        if not all(self._has_ranking_metadata(item) for item in ordered):
+        if not all(
+            self._optimizer.can_rank_provider(item)
+            for item in ordered
+        ):
             return ordered
         return sorted(
             ordered,
@@ -68,13 +71,3 @@ class ProviderRouter:
                 f"{request.capability.value}"
             )
         return ordered
-
-    @staticmethod
-    def _has_ranking_metadata(
-        descriptor: ProviderDescriptor,
-    ) -> bool:
-        return (
-            "quality_score" in descriptor.metadata
-            and "reliability" in descriptor.metadata
-            and RouterPolicy.estimated_cost(descriptor) is not None
-        )
