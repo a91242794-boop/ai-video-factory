@@ -10,7 +10,7 @@ from avf.router.policy import RouterPolicy
 
 
 class ProviderRouter:
-    """Select one eligible provider declaration without executing it."""
+    """Select eligible provider declarations without executing them."""
 
     def __init__(
         self,
@@ -24,6 +24,12 @@ class ProviderRouter:
         self,
         request: CapabilityRequest,
     ) -> ProviderDescriptor:
+        return self.select_candidates(request)[0]
+
+    def select_candidates(
+        self,
+        request: CapabilityRequest,
+    ) -> list[ProviderDescriptor]:
         candidates = (
             descriptor
             for descriptor in self._registry.list_for(request.capability)
@@ -41,4 +47,4 @@ class ProviderRouter:
                 "No eligible provider for capability "
                 f"{request.capability.value}"
             )
-        return ordered[0]
+        return ordered
