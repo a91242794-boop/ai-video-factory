@@ -6,6 +6,7 @@ from avf.capabilities.types import (
     QualityTier,
     SpeedTier,
 )
+from avf.capabilities.results import CapabilityResult, RunMetrics
 from avf.capabilities.requests import (
     CapabilityRequest,
     DirectorRequest,
@@ -16,12 +17,14 @@ from avf.capabilities.requests import (
 
 __all__ = [
     "CapabilityRequest",
+    "CapabilityResult",
     "CapabilityType",
     "CostTier",
     "DirectorRequest",
     "ImageGenerationRequest",
     "QARequest",
     "QualityTier",
+    "RunMetrics",
     "SpeedTier",
     "VideoGenerationRequest",
 ]
