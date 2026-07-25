@@ -1,5 +1,6 @@
 """Zero-cost local module used to exercise the AVF runtime."""
 
+from avf.runtime.context import ExecutionContext
 from avf.runtime.types import ModuleMetadata, ModuleState
 
 
@@ -20,20 +21,63 @@ class StubModule:
         self.state = ModuleState.CREATED
         self.start_count = 0
         self.stop_count = 0
+        self.initialize_count = 0
+        self.execute_count = 0
+        self.shutdown_count = 0
         self._events = events
+
+    def initialize(self, context: ExecutionContext) -> None:
+        if self.state in (
+            ModuleState.INITIALIZED,
+            ModuleState.RUNNING,
+        ):
+            return
+        self.state = ModuleState.INITIALIZED
+        self.initialize_count += 1
+        self._record("initialize")
+
+    def execute(self, context: ExecutionContext) -> object:
+        if self.state not in (
+            ModuleState.INITIALIZED,
+            ModuleState.RUNNING,
+        ):
+            raise RuntimeError(
+                f"Module must be initialized before execute: "
+                f"{self.metadata.module_id}"
+            )
+        self.state = ModuleState.RUNNING
+        self.execute_count += 1
+        self._record("execute")
+        return {
+            "module_id": self.metadata.module_id,
+            "project_id": context.project_id,
+            "cost": self.metadata.cost,
+            "stub": True,
+        }
+
+    def shutdown(self) -> None:
+        if self.state in (ModuleState.CREATED, ModuleState.STOPPED):
+            return
+        self.state = ModuleState.STOPPED
+        self.shutdown_count += 1
+        self._record("shutdown")
 
     def start(self) -> None:
         if self.state is ModuleState.RUNNING:
             return
         self.state = ModuleState.RUNNING
         self.start_count += 1
-        if self._events is not None:
-            self._events.append(f"start:{self.metadata.module_id}")
+        self._record("start")
 
     def stop(self) -> None:
         if self.state is not ModuleState.RUNNING:
             return
         self.state = ModuleState.STOPPED
         self.stop_count += 1
+        self._record("stop")
+
+    def _record(self, action: str) -> None:
         if self._events is not None:
-            self._events.append(f"stop:{self.metadata.module_id}")
+            self._events.append(
+                f"{action}:{self.metadata.module_id}"
+            )
