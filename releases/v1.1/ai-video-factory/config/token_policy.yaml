@@ -1,0 +1,33 @@
+version: 1.1
+strategy: progressive_disclosure
+budgets:
+  intake_max_tokens: 500
+  director_max_tokens: 700
+  storyboard_dsl_max_tokens: 1400
+  reference_lock_max_tokens: 700
+  compiled_prompt_compact_max_tokens: 1300
+  compiled_prompt_standard_max_tokens: 2200
+  revision_prompt_max_tokens: 450
+rules:
+  default_prompt_mode: compact
+  preview_panels: [1, 5, 8, 15]
+  full_generation_after_preview_pass: true
+  static_qa_before_model_qa: true
+  reuse_unchanged_assets: true
+  omit_empty_fields: true
+  use_ids_in_shots: true
+  max_regeneration_attempts: 2
+cache:
+  algorithm: sha256
+  include_files:
+    - product_brief.yaml
+    - storyboard.dsl.yaml
+    - reference_lock.yaml
+quality_gate:
+  static_min_score: 90
+  visual_min_score: 90
+  hard_failures:
+    - text_in_image
+    - product_redesign
+    - wrong_actor
+    - prohibited_claim_visual

@@ -1,0 +1,11 @@
+version: 1.1
+project_id: ""
+format: {panels: 16, layout: 4x4, crop: "9:16"}
+refs:
+  product: PRODUCT_01
+  character: CHARACTER_01
+  environment: ENV_01
+  camera: CAM_01
+  brand: BRAND_01
+shots:
+  - {id: 1, purpose: hook, visual: "", action: "", shot: CU, continuity: A}

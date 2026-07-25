@@ -1,0 +1,45 @@
+project_id: minoxidil-mx-001
+product:
+  name: "Minoxidil 5% Keratin Scalp Massage Cream"
+  category: "hair and scalp care"
+  reference_images:
+    - "/mnt/data/17840986391011.png"
+    - "/mnt/data/17840986396982.png"
+    - "/mnt/data/17840986401133.png"
+    - "/mnt/data/17840986404374.png"
+    - "/mnt/data/17840986410795.png"
+    - "/mnt/data/17840986414226.png"
+    - "/mnt/data/主图1.jpg"
+  color: "white tube, green and gold label accents"
+market:
+  country: "Mexico"
+  language: "es-MX"
+  platform: "TikTok / Mercado Libre"
+  target_audience: "adults concerned about thinning-looking hair and daily scalp care"
+video:
+  duration_seconds: 15
+  aspect_ratio: "9:16"
+  storyboard_panels: 16
+  style: "realistic Mexican UGC mixed with premium hair-care commercial"
+  primary_goal: "conversion"
+message:
+  pain_points:
+    - "hair looks thinner"
+    - "visible sparse areas"
+    - "loss of confidence"
+  selling_points:
+    - "5% Minoxidil positioning shown on package"
+    - "keratin scalp massage cream"
+    - "simple massage application"
+  prohibited_claims:
+    - "guaranteed regrowth"
+    - "instant results"
+    - "fixed timeline before-and-after"
+  hook_direction: "mirror discovery and visible thinning concern"
+  cta: "Descubre tu rutina de cuidado capilar"
+creative:
+  character: "Mexican man, 32–38, natural appearance"
+  environment: "modern bright bathroom"
+  time_of_day: "morning"
+  lighting: "soft natural daylight"
+  visual_palette: "clean white, warm skin tones, subtle green and gold accents"

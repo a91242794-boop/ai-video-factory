@@ -1,0 +1,21 @@
+version: 1.1
+project_id: minoxidil-mx-001
+format: {panels: 16, layout: 4x4, crop: "9:16", reading: row_major}
+refs: {product: PRODUCT_01, character: CHARACTER_01, environment: ENV_01, camera: CAM_01, brand: BRAND_01}
+shots:
+  - {id: 1, purpose: hook, visual: mirror hairline check, action: parts frontal hair and notices sparse-looking area, shot: CU, continuity: A}
+  - {id: 2, purpose: pain, visual: scalp part close-up, action: fingers separate hair gently, shot: MACRO, continuity: A}
+  - {id: 3, purpose: pain, visual: a few loose hairs on comb, action: hand holds comb near sink, shot: MACRO, continuity: A}
+  - {id: 4, purpose: emotion, visual: mirror reaction, action: subtle concerned exhale, shot: CU, continuity: A}
+  - {id: 5, purpose: reveal, visual: product upright on sink, action: hand reaches toward tube, shot: MCU, continuity: A}
+  - {id: 6, purpose: package, visual: product front in hand, action: holds label toward camera, shot: CU, continuity: A}
+  - {id: 7, purpose: texture, visual: open cap and small white cream amount, action: dispenses onto fingertip, shot: MACRO, continuity: A}
+  - {id: 8, purpose: apply, visual: scalp part application, action: dots a small amount along part, shot: CU, continuity: A}
+  - {id: 9, purpose: use, visual: fingertip scalp massage, action: massages gently with both hands, shot: CU, continuity: A}
+  - {id: 10, purpose: mechanism, visual: restrained clean scalp-care macro abstraction, action: transparent moisture disperses around hair roots, shot: MACRO_CGI, continuity: B}
+  - {id: 11, purpose: ingredient, visual: clean keratin-inspired particles around hair fiber, action: particles settle along hair surface, shot: MACRO_CGI, continuity: B}
+  - {id: 12, purpose: experience, visual: natural lightweight hair finish, action: styles hair with fingers, shot: CU, continuity: A}
+  - {id: 13, purpose: routine, visual: completed morning grooming, action: checks side profile in mirror, shot: MCU, continuity: A}
+  - {id: 14, purpose: confidence, visual: relaxed mirror expression, action: gives a subtle confident smile, shot: CU, continuity: A}
+  - {id: 15, purpose: hero, visual: product beside naturally glossy hair, action: static premium composition, shot: HERO, continuity: C}
+  - {id: 16, purpose: cta_plate, visual: product on clean white background with empty negative space, action: static centered hero shot, shot: HERO, continuity: C}

@@ -1,0 +1,12 @@
+{
+  "sha256": "05d71cb4e4d59b2b0c1bb1592a89e8e57af2f562b21dc83b0da704cc244b22fa",
+  "mode": "compact",
+  "panels": [
+    1,
+    5,
+    8,
+    15
+  ],
+  "characters": 1900,
+  "estimated_tokens": 475
+}

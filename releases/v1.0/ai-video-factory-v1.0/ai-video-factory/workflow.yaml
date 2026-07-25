@@ -1,0 +1,40 @@
+name: ai-video-factory
+version: 1.0.0
+stages:
+  - id: intake
+    input: product_brief.yaml
+    output: normalized_brief.yaml
+  - id: director
+    agent: agents/director.md
+    input: normalized_brief.yaml
+    output: director.yaml
+  - id: storyboard
+    agent: agents/storyboard.md
+    input:
+      - normalized_brief.yaml
+      - director.yaml
+    output: storyboard.yaml
+  - id: consistency
+    agent: agents/consistency.md
+    input:
+      - normalized_brief.yaml
+      - storyboard.yaml
+    output: consistency.yaml
+  - id: gpt_image
+    agent: agents/gpt_image.md
+    input:
+      - storyboard.yaml
+      - consistency.yaml
+      - product_reference_images
+    output:
+      - gpt_image_prompt.md
+      - storyboard.json
+  - id: qa
+    agent: agents/qa.md
+    input:
+      - storyboard.json
+      - consistency.yaml
+    output: qa_report.md
+quality_gate:
+  minimum_score: 90
+  regenerate_if_below: true

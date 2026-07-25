@@ -1,0 +1,186 @@
+{
+  "project_id": "minoxidil-mx-001",
+  "format": {
+    "panels": 16,
+    "aspect_ratio": "9:16",
+    "board_layout": "4x4"
+  },
+  "shots": [
+    {
+      "id": 1,
+      "duration": 0.9,
+      "purpose": "hook",
+      "visual": "墨西哥男性在浴室镜前拨开发际线，注意到头发看起来稀疏",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "墨西哥男性在浴室镜前拨开发际线，注意到头发看起来稀疏",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 2,
+      "duration": 0.9,
+      "purpose": "pain",
+      "visual": "头皮分缝近景，手指轻轻分开发丝",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "头皮分缝近景，手指轻轻分开发丝",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 3,
+      "duration": 0.9,
+      "purpose": "pain amplification",
+      "visual": "梳子齿间几根掉落发丝的微距",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "梳子齿间几根掉落发丝的微距",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 4,
+      "duration": 0.9,
+      "purpose": "emotion",
+      "visual": "人物看着镜子，短暂皱眉并呼气",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "人物看着镜子，短暂皱眉并呼气",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 5,
+      "duration": 0.9,
+      "purpose": "product reveal",
+      "visual": "参考产品立在洗手台上，人物手伸入画面",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "参考产品立在洗手台上，人物手伸入画面",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 6,
+      "duration": 0.9,
+      "purpose": "package",
+      "visual": "手持产品正面，包装颜色与参考图一致",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "手持产品正面，包装颜色与参考图一致",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 7,
+      "duration": 0.9,
+      "purpose": "texture",
+      "visual": "打开盖子，少量白色膏体出现在指尖",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "打开盖子，少量白色膏体出现在指尖",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 8,
+      "duration": 0.9,
+      "purpose": "application",
+      "visual": "沿头皮分缝少量点涂",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "沿头皮分缝少量点涂",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 9,
+      "duration": 0.9,
+      "purpose": "massage",
+      "visual": "双手指腹轻柔按摩头皮",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "双手指腹轻柔按摩头皮",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 10,
+      "duration": 0.9,
+      "purpose": "mechanism",
+      "visual": "抽象、克制的头皮护理微观画面",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "抽象、克制的头皮护理微观画面",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 11,
+      "duration": 0.9,
+      "purpose": "selling point",
+      "visual": "角蛋白与护理成分以洁净粒子方式围绕发丝",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "角蛋白与护理成分以洁净粒子方式围绕发丝",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 12,
+      "duration": 0.9,
+      "purpose": "experience",
+      "visual": "人物整理头发，发丝自然、不显油腻",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "人物整理头发，发丝自然、不显油腻",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 13,
+      "duration": 0.9,
+      "purpose": "benefit",
+      "visual": "完成晨间造型，侧面自然光勾勒头发",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "完成晨间造型，侧面自然光勾勒头发",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 14,
+      "duration": 0.9,
+      "purpose": "confidence",
+      "visual": "同一人物看向镜中，神情轻松自信",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "同一人物看向镜中，神情轻松自信",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 15,
+      "duration": 0.9,
+      "purpose": "hero",
+      "visual": "产品与健康光泽发丝的高端商业特写",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "产品与健康光泽发丝的高端商业特写",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    },
+    {
+      "id": 16,
+      "duration": 1.5,
+      "purpose": "cta",
+      "visual": "产品白底英雄镜头，预留后期CTA区域",
+      "subject": "same Mexican male actor and exact reference product",
+      "action": "产品白底英雄镜头，预留后期CTA区域",
+      "camera": "close-up or macro, subtle push-in, realistic vertical commercial framing",
+      "lighting": "soft morning daylight, clean white bathroom, consistent exposure",
+      "continuity": "same actor, dark short hair, white T-shirt, same bathroom and product packaging"
+    }
+  ]
+}

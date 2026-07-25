@@ -1,0 +1,21 @@
+version: 1.1
+product:
+  id: PRODUCT_01
+  reference_images: []
+  source_of_truth: uploaded_reference
+  immutable: []
+  scale: ""
+character:
+  id: CHARACTER_01
+  immutable: []
+environment:
+  id: ENV_01
+  immutable: []
+cinematography:
+  id: CAM_01
+  lens_set: []
+  movement: []
+brand:
+  id: BRAND_01
+  immutable: []
+global_negative: []

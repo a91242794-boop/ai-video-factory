@@ -1,0 +1,59 @@
+name: ai-video-factory
+version: 1.1.0
+stages:
+  - id: intake
+    input: product_brief.yaml
+    output: normalized_brief.yaml
+    token_mode: compact
+  - id: director
+    agent: agents/director.md
+    input: normalized_brief.yaml
+    output: director.yaml
+    token_mode: compact
+  - id: storyboard_dsl
+    agent: agents/storyboard.md
+    input: [normalized_brief.yaml, director.yaml]
+    output: storyboard.dsl.yaml
+    token_mode: ids_only
+  - id: reference_lock
+    agent: agents/reference_lock.md
+    input: [normalized_brief.yaml, product_reference_images]
+    output: reference_lock.yaml
+    token_mode: single_source
+  - id: static_qa
+    command: static_qa.py
+    input: [storyboard.dsl.yaml, normalized_brief.yaml]
+    output: qa_static.json
+    model_tokens: 0
+  - id: compile_preview
+    agent: agents/prompt_compiler.md
+    command: compiler.py
+    input: [storyboard.dsl.yaml, reference_lock.yaml]
+    output: preview_prompt.md
+    panels: [1, 5, 8, 15]
+  - id: preview_gate
+    input: preview_image
+    output: preview_qa.json
+    pass_required: true
+  - id: compile_full
+    agent: agents/prompt_compiler.md
+    command: compiler.py
+    input: [storyboard.dsl.yaml, reference_lock.yaml]
+    output: compiled_prompt.md
+    prompt_mode: compact
+  - id: image_generation
+    agent: agents/gpt_image.md
+    input: [compiled_prompt.md, product_reference_images]
+    output: storyboard.png
+  - id: visual_qa
+    agent: agents/qa.md
+    input: [storyboard.png, reference_lock.yaml]
+    output: qa_visual.json
+  - id: auto_revision
+    agent: agents/auto_revision.md
+    condition: visual_qa.score < 90
+    input: [qa_visual.json, storyboard.png]
+    output: revision_prompt.md
+quality_gate:
+  minimum_score: 90
+  max_regeneration_attempts: 2

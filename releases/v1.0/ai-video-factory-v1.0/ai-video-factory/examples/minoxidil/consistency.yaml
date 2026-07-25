@@ -1,0 +1,33 @@
+character:
+  id: MX_MALE_01
+  age_range: "32-38"
+  appearance: "Mexican male, medium warm skin tone, natural face, no beard or light stubble"
+  hair: "short dark hair, mildly thinning-looking frontal area"
+  wardrobe: "plain white crew-neck T-shirt"
+product:
+  reference_priority: "uploaded images are the single source of truth"
+  shape: "white squeeze tube"
+  colors: "white body, green and gold accents"
+  scale_rules: "held naturally in one hand; never oversized; label orientation remains upright"
+environment:
+  location: "modern white bathroom"
+  props: "mirror, white sink, minimal toiletries"
+  time: "morning"
+cinematography:
+  lenses: "35mm for medium shots, 50-85mm for close-ups, macro for texture"
+  motion: "slow push-in, small handheld UGC movement, no fast orbit"
+lighting:
+  key: "soft daylight from one side"
+  contrast: "low to medium"
+brand:
+  mood: "clean, credible, premium but approachable"
+  prohibited_styles: "cartoon, illustration, excessive CGI, fantasy glow, fake medical claims"
+continuity_rules:
+  immutable:
+    - "same actor, same haircut, same white T-shirt"
+    - "same bathroom and morning light"
+    - "exact product tube design from uploaded references"
+  allowed_variations:
+    - "camera distance"
+    - "hand position"
+    - "subtle facial expression"

@@ -1,0 +1,35 @@
+project_id: ""
+product:
+  name: ""
+  category: ""
+  brand: ""
+  reference_images: []
+  product_url: ""
+  physical_dimensions: ""
+  color: ""
+  packaging: ""
+market:
+  country: "Mexico"
+  language: "es-MX"
+  platform: "TikTok"
+  target_audience: ""
+video:
+  duration_seconds: 15
+  aspect_ratio: "9:16"
+  storyboard_panels: 16
+  style: "realistic UGC + premium commercial"
+  primary_goal: "conversion"
+message:
+  pain_points: []
+  selling_points: []
+  proof_points: []
+  prohibited_claims: []
+  hook_direction: ""
+  cta: ""
+creative:
+  character: ""
+  environment: ""
+  time_of_day: ""
+  lighting: ""
+  visual_palette: ""
+  references: []

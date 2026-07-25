@@ -1,0 +1,20 @@
+project_id: ""
+format:
+  panels: 16
+  aspect_ratio: "9:16"
+  board_layout: "4x4"
+shots:
+  - id: 1
+    duration: 0.9
+    purpose: "hook"
+    visual: ""
+    subject: ""
+    action: ""
+    camera: ""
+    composition: ""
+    lighting: ""
+    emotion: ""
+    continuity: ""
+    subtitle: ""
+    voiceover: ""
+    sound: ""

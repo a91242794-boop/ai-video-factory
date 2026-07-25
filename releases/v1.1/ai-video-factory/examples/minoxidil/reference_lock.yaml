@@ -1,0 +1,44 @@
+version: 1.1
+product:
+  id: PRODUCT_01
+  reference_images:
+    - /mnt/data/17840986391011.png
+    - /mnt/data/主图1.jpg
+  source_of_truth: uploaded_reference
+  immutable:
+    - white squeeze tube with white flip cap
+    - teal center label and warm gold lower label
+    - large 5% graphic and black hair-follicle silhouette
+    - original tube proportions; label upright; no redesign
+  scale: natural 100 g hand-held cosmetic tube, never oversized
+character:
+  id: CHARACTER_01
+  immutable:
+    - Mexican male, age 32-38, warm medium skin, light stubble
+    - short dark hair with mildly thinning-looking frontal area
+    - plain white crew-neck T-shirt
+    - same face, haircut and clothing in all human shots
+environment:
+  id: ENV_01
+  immutable:
+    - same modern white bathroom
+    - mirror, white sink, minimal neutral props
+    - morning, soft side daylight
+cinematography:
+  id: CAM_01
+  lens_set: [35mm, 50mm, 85mm, macro]
+  movement: [static, subtle_push_in, gentle_handheld]
+  framing: realistic vertical commercial keyframes
+brand:
+  id: BRAND_01
+  immutable:
+    - realistic UGC plus premium hair-care commercial
+    - clean white, teal and warm gold accents
+    - credible, restrained, natural skin and hair texture
+global_negative:
+  - any text, title, caption, panel number or watermark
+  - redesigned package, altered colors, deformed tube or oversized product
+  - different actor, hairstyle, wardrobe, bathroom or lighting
+  - guaranteed regrowth, instant result, before-after transformation
+  - cartoon, illustration, fantasy glow, medical procedure, pills, blood
+  - extra fingers, malformed hands, duplicate panels, illegible labels
