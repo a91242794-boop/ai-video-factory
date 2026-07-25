@@ -120,17 +120,43 @@ Pipeline
   -> External Model
 ```
 
-The current Capability Layer implements stable request and result data,
-execution metrics, and an in-memory registry of provider declarations. It does
-not implement the Provider Router, any Adapter, or an external model call.
+The Capability Layer implements stable request and result data, execution
+metrics, and an in-memory registry of provider declarations. The Provider
+Router selects an eligible declaration. The Adapter Execution Layer resolves
+that provider ID to an Adapter and normalizes its response without coupling
+the Router to provider execution.
 
 The boundaries are intentionally distinct:
 
 - a Contract defines what a module can do;
 - a Capability Request expresses what this run needs;
-- the future Provider Router decides who should perform the work;
+- the Provider Router decides who should perform the work;
 - an Adapter knows how to invoke and normalize one concrete tool or model.
 
 Pipeline code depends on capability data rather than provider SDKs. This keeps
 provider selection, fallback, and cost policy outside creative and workflow
 logic. See [`Contracts.md`](Contracts.md) for the data-contract boundary.
+
+## Adapter execution layer
+
+The local execution boundary is:
+
+```text
+Capability Request
+  -> Provider Router
+  -> ProviderDescriptor
+  -> AdapterRegistry
+  -> Adapter
+  -> CapabilityResult
+```
+
+`AdapterContract` defines the provider ID, capability, and `execute()` method.
+`AdapterRegistry` stores executable Adapter instances separately from
+`CapabilityRegistry`, which stores routing descriptions only. Matching
+provider IDs connect selection to execution without making either registry
+instantiate the other layer.
+
+The current Director, Image, Video, and QA Adapters are deterministic local
+Stubs. They return successful, provider-neutral results with zero estimated
+cost, actual cost, and model tokens. They do not read credentials, access a
+network, or invoke a real model.
