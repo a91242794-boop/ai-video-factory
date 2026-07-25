@@ -16,10 +16,12 @@ from avf.execution.errors import (
     ExecutionValidationError,
 )
 from avf.execution.metrics import ExecutionMetrics
+from avf.intelligence.quality import QualityGate
 from avf.resilience.errors import (
     AdapterTimeout,
     ExecutionFailed,
     ProviderUnavailable,
+    QualityRejected,
     map_execution_error,
 )
 from avf.resilience.fallback import FallbackPolicy
@@ -46,12 +48,14 @@ class ExecutionService:
         retry_policy: RetryPolicy | None = None,
         fallback_policy: FallbackPolicy | None = None,
         cost_guard: CostGuard | None = None,
+        quality_gate: QualityGate | None = None,
     ) -> None:
         self._router = router
         self._adapters = adapters
         self._retry_policy = retry_policy or RetryPolicy()
         self._fallback_policy = fallback_policy or FallbackPolicy(router)
         self._cost_guard = cost_guard or CostGuard()
+        self._quality_gate = quality_gate or QualityGate()
 
     def execute(
         self,
@@ -131,6 +135,44 @@ class ExecutionService:
                 raise
 
             result = outcome.value
+            minimum_score = request.metadata.get("minimum_quality_score")
+            if minimum_score is not None:
+                decision = self._quality_gate.evaluate(
+                    result,
+                    minimum_score=float(minimum_score),
+                )
+                if not decision.accepted:
+                    rejection = QualityRejected(decision.reason)
+                    last_failure = rejection
+                    context.trace.append(
+                        {
+                            "event": "quality_rejected",
+                            "request_id": context.request_id,
+                            "provider": provider.provider_id,
+                            "adapter": adapter.provider_id,
+                            "retry_count": retry_count,
+                            "fallback_path": list(fallback_path),
+                            "cost": {"estimated": estimated_cost},
+                            "quality_score": (
+                                None
+                                if decision.score is None
+                                else decision.score.value
+                            ),
+                            "minimum_score": decision.minimum_score.value,
+                            "error": type(rejection).__name__,
+                        }
+                    )
+                    if index + 1 < len(candidates):
+                        self._record_fallback(
+                            context,
+                            provider,
+                            candidates[index + 1],
+                            fallback_path,
+                            estimated_cost,
+                        )
+                        continue
+                    raise rejection
+
             duration = perf_counter() - started
             metrics = ExecutionMetrics(
                 estimated_cost=estimated_cost,
