@@ -1,0 +1,30 @@
+project:
+  id: avf-mini-demo
+  name: Daily Scalp Care Mini Storyboard
+
+product:
+  name: Daily Scalp Care Serum
+  category: hair and scalp care
+  key_features:
+    - lightweight texture
+    - simple daily use
+  reference_images:
+    - product-front.png
+
+market:
+  country: United States
+  language: en-US
+  platform: TikTok
+  audience: adults building a simple scalp-care routine
+
+video:
+  duration_seconds: 15
+  shot_count: 6
+  aspect_ratio: "9:16"
+
+creative:
+  hook: Notice a frustrating dry-looking scalp during the morning routine
+  tone: realistic, clean, and reassuring
+  environment: bright modern bathroom in soft morning light
+  character: adult creator in a plain neutral T-shirt
+  cta: Discover your daily care routine
