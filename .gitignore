@@ -34,3 +34,10 @@ build/
 # Temporary
 *.tmp
 *.bak
+# Python packaging and test cache
+*.egg-info/
+.pytest_cache/
+
+# Local AVF outputs
+outputs/*
+!outputs/.gitkeep

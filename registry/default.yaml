@@ -1,0 +1,21 @@
+storyboard:
+  purposes:
+    - hook
+    - problem
+    - product_reveal
+    - use
+    - benefit
+    - cta_plate
+
+compiler:
+  target: gpt-image
+
+qa:
+  required_purposes:
+    - hook
+    - problem
+    - product_reveal
+    - use
+    - benefit
+    - cta_plate
+  minimum_score: 90
