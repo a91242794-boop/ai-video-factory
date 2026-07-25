@@ -77,4 +77,3 @@ def load_project(path: str | Path) -> Project:
             cta=_required(raw, ("creative", "cta"), str),
         ),
     )
-

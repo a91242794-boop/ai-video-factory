@@ -64,4 +64,3 @@ def load_registry(path: str | Path) -> Registry:
         qa_required_purposes=tuple(required_purposes),
         minimum_qa_score=minimum_score,
     )
-

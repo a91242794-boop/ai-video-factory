@@ -46,4 +46,3 @@ class Project:
     market: Market
     video: Video
     creative: Creative
-
