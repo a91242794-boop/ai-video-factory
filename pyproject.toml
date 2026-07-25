@@ -24,4 +24,4 @@ avf = "avf.cli:main"
 include = ["avf*"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "avf/tests"]
