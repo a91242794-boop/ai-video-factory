@@ -1,6 +1,12 @@
-"""In-memory provider performance snapshots and incremental statistics."""
+"""Provider performance snapshots and incremental statistics."""
 
+import json
+import os
+import tempfile
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Iterable
 
 from avf.intelligence.scoring import QualityScore
 
@@ -16,12 +22,103 @@ class ProviderPerformance:
     failed_runs: int
 
 
-class ProviderPerformanceStore:
-    """Record process-local provider outcomes without external storage."""
+PerformanceSnapshot = tuple[ProviderPerformance, int]
 
-    def __init__(self) -> None:
+
+class PerformanceStorage(ABC):
+    """Persistence boundary for provider performance snapshots."""
+
+    @abstractmethod
+    def save(self, records: Iterable[PerformanceSnapshot]) -> None:
+        """Persist a complete performance snapshot."""
+
+    @abstractmethod
+    def load(self) -> list[PerformanceSnapshot]:
+        """Load all persisted performance snapshots."""
+
+    @abstractmethod
+    def clear(self) -> None:
+        """Remove all persisted performance snapshots."""
+
+
+class JsonPerformanceStorage(PerformanceStorage):
+    """Store provider performance snapshots in a versioned JSON file."""
+
+    VERSION = 1
+
+    def __init__(
+        self,
+        path: str | os.PathLike[str] = "provider_performance.json",
+    ) -> None:
+        self.path = Path(path)
+
+    def save(self, records: Iterable[PerformanceSnapshot]) -> None:
+        payload = {
+            "version": self.VERSION,
+            "records": [
+                {
+                    **{
+                        field: getattr(performance, field)
+                        for field in performance.__dataclass_fields__
+                    },
+                    "quality_count": quality_count,
+                }
+                for performance, quality_count in records
+            ],
+        }
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        temporary_path: Path | None = None
+        try:
+            with tempfile.NamedTemporaryFile(
+                "w",
+                encoding="utf-8",
+                dir=self.path.parent,
+                prefix=f".{self.path.name}.",
+                suffix=".tmp",
+                delete=False,
+            ) as temporary_file:
+                temporary_path = Path(temporary_file.name)
+                json.dump(payload, temporary_file, indent=2)
+                temporary_file.write("\n")
+                temporary_file.flush()
+                os.fsync(temporary_file.fileno())
+            os.replace(temporary_path, self.path)
+        except BaseException:
+            if temporary_path is not None:
+                temporary_path.unlink(missing_ok=True)
+            raise
+
+    def load(self) -> list[PerformanceSnapshot]:
+        if not self.path.exists() or self.path.stat().st_size == 0:
+            return []
+        payload = json.loads(self.path.read_text(encoding="utf-8"))
+        if payload.get("version") != self.VERSION:
+            raise ValueError(
+                f"Unsupported provider performance version: "
+                f"{payload.get('version')!r}"
+            )
+        snapshots = []
+        for record in payload["records"]:
+            values = dict(record)
+            quality_count = values.pop("quality_count", 0)
+            snapshots.append((ProviderPerformance(**values), quality_count))
+        return snapshots
+
+    def clear(self) -> None:
+        self.path.unlink(missing_ok=True)
+
+
+class ProviderPerformanceStore:
+    """Record provider outcomes, optionally backed by persistent storage."""
+
+    def __init__(self, storage: PerformanceStorage | None = None) -> None:
+        self._storage = storage
         self._performance: dict[str, ProviderPerformance] = {}
         self._quality_counts: dict[str, int] = {}
+        if storage is not None:
+            for performance, quality_count in storage.load():
+                self._performance[performance.provider_id] = performance
+                self._quality_counts[performance.provider_id] = quality_count
 
     def record_run(
         self,
@@ -84,6 +181,7 @@ class ProviderPerformanceStore:
         )
         self._performance[provider_id] = performance
         self._quality_counts[provider_id] = quality_count
+        self._save()
         return performance
 
     def get(self, provider_id: str) -> ProviderPerformance:
@@ -100,6 +198,8 @@ class ProviderPerformanceStore:
     def clear(self) -> None:
         self._performance.clear()
         self._quality_counts.clear()
+        if self._storage is not None:
+            self._storage.clear()
 
     def __len__(self) -> int:
         return len(self._performance)
@@ -113,3 +213,13 @@ class ProviderPerformanceStore:
         return (
             previous_average * previous_count + value
         ) / (previous_count + 1)
+
+    def _save(self) -> None:
+        if self._storage is not None:
+            self._storage.save(
+                (
+                    performance,
+                    self._quality_counts[provider_id],
+                )
+                for provider_id, performance in self._performance.items()
+            )
